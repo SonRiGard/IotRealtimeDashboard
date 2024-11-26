@@ -30,10 +30,18 @@
             padding: 10px;
             border-radius: 5px;
         }
-        /* Style for the time display */
+        /* Style for the time display (digital clock) */
         .time-cell {
-            font-size: 20px;
+            font-size: 24px;
+            font-family: 'Courier New', monospace;
+            color: #333;
+            letter-spacing: 2px;
             margin-bottom: 10px;
+        }
+        .time-cell span {
+            display: block;
+            font-size: 32px;
+            color: #28a745;
         }
         /* Style for the chart container */
         .chart-container {
@@ -95,6 +103,16 @@
             }
         });
 
+        // Hàm cập nhật đồng hồ điện tử
+        function updateClock(timeString) {
+            const clockElement = document.querySelector('.time-cell span');
+            const now = new Date(timeString);
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
         // Lắng nghe sự kiện 'data_update'
         socket.on('data_update', (data) => {
             if (data) {
@@ -102,10 +120,16 @@
                 tableBody.innerHTML = `
                     <tr>
                         <td class="id-cell">${data.ID}</td>
-                        <td class="time-cell">${new Date(data.timeDate).toLocaleString()}</td>
+                        <td class="time-cell">
+                            <span></span>
+                            <small>${new Date(data.timeDate).toLocaleDateString()}</small>
+                        </td>
                         <td>${data.Value}</td>
                     </tr>
                 `;
+                
+                // Cập nhật đồng hồ điện tử
+                updateClock(data.timeDate);
 
                 // Cập nhật biểu đồ giá trị
                 valueChart.data.datasets[0].data = [data.Value];
