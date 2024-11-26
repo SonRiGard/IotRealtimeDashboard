@@ -64,9 +64,7 @@
 
 ---
 
-# 3. Các lệnh sử dụng
-
-### Set Up môi trường 
+## 3. Các lệnh sử dụng
 
 __Cài đặt các yêu cầu:__ Để cài đặt tất cả các thư viện từ requirements.txt vào hệ thống của bạn, bạn có thể chạy lệnh:
 ```bash
@@ -90,7 +88,7 @@ __Chạy tool auto add Value cho database:__ mở thư mục `toolDataRealtime` 
 ```
 python realtime.py
 ```
-__Và mở file index.html để xem kết quả:__
+__Và mở file index.html bằng live server để xem kết quả:__
 
 ## Kết quả
 
