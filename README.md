@@ -7,5 +7,7 @@ pip install flask pymysql
 pip install flask-cors
 ```
 
-https://github.com/user-attachments/assets/4a9b5e1b-13cb-4681-aa15-c27b7ce24314
+## Kết quả
+
+https://github.com/user-attachments/assets/f7040d0f-4d34-4db2-8912-e8c0ef96d526
 
