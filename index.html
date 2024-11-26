@@ -13,7 +13,7 @@
         table {
             margin: 0 auto;
             border-collapse: collapse;
-            width: 50%;
+            width: 60%;
         }
         th, td {
             padding: 10px;
@@ -21,6 +21,24 @@
         }
         th {
             background-color: #f4f4f4;
+        }
+        /* Style for ID cell */
+        .id-cell {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        /* Style for the time display */
+        .time-cell {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        /* Style for the chart container */
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -41,21 +59,57 @@
         </tbody>
     </table>
 
+    <!-- Chart.js container -->
+    <div class="chart-container">
+        <canvas id="valueChart"></canvas>
+    </div>
+
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const socket = io.connect('http://localhost:5001');  // Kết nối WebSocket
         const tableBody = document.getElementById('data-table');
+        const ctx = document.getElementById('valueChart').getContext('2d');
+
+        // Tạo biểu đồ cột Value
+        const valueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Value'],
+                datasets: [{
+                    label: 'Value',
+                    data: [0],
+                    backgroundColor: '#007bff',
+                    borderColor: '#0056b3',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        min: -100,
+                        max: 100,
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
         // Lắng nghe sự kiện 'data_update'
         socket.on('data_update', (data) => {
             if (data) {
+                // Cập nhật bảng ID, Time và Value
                 tableBody.innerHTML = `
                     <tr>
-                        <td>${data.ID}</td>
-                        <td>${new Date(data.timeDate).toLocaleString()}</td>
+                        <td class="id-cell">${data.ID}</td>
+                        <td class="time-cell">${new Date(data.timeDate).toLocaleString()}</td>
                         <td>${data.Value}</td>
                     </tr>
                 `;
+
+                // Cập nhật biểu đồ giá trị
+                valueChart.data.datasets[0].data = [data.Value];
+                valueChart.update();
             } else {
                 tableBody.innerHTML = `
                     <tr>
