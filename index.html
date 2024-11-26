@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 50%;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Data Display</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Time</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody id="data-table">
+            <tr>
+                <td colspan="3">Waiting for data...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script>
+        const socket = io.connect('http://localhost:5001');  // Kết nối WebSocket
+        const tableBody = document.getElementById('data-table');
+
+        // Lắng nghe sự kiện 'data_update'
+        socket.on('data_update', (data) => {
+            if (data) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td>${data.ID}</td>
+                        <td>${new Date(data.timeDate).toLocaleString()}</td>
+                        <td>${data.Value}</td>
+                    </tr>
+                `;
+            } else {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="3">No data available</td>
+                    </tr>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
