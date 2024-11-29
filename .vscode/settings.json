@@ -1,0 +1,9 @@
+{  
+"liveServer.settings.https":   
+    {
+    "enable": true, //set it true to enable the feature.  
+    "cert": "C:\\Users\\heozu\\VSCode_Workspaces\\IOTWEBSOCKET\\certificate\\localhost.pem", //full path of the certificate  
+    "key": "C:\\Users\\heozu\\VSCode_Workspaces\\IOTWEBSOCKET\\certificate\\localhost.key", //full path of the private key  
+    "passphrase": "1289"  
+    }  
+}
