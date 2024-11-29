@@ -5,6 +5,8 @@ import pymysql
 import time
 import json
 from datetime import datetime
+from OpenSSL import SSL
+
 
 app = Flask(__name__)
 # CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5500"}})  # Cho phép nguồn gốc Live Server
@@ -72,5 +74,6 @@ def send_realtime_data():
     socketio.emit('data_update', result)
 
 if __name__ == '__main__':
+    context = ('certificate/localhost.crt', 'certificate/localhost.key')
     socketio.start_background_task(background_task)  # Chạy task nền
-    socketio.run(app, debug=True,port=5001)
+    socketio.run(app, debug=True,port=5001,ssl_context=context)
